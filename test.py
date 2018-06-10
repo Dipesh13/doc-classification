@@ -19,12 +19,12 @@ from sklearn.naive_bayes import GaussianNB
 
 parser = argparse.ArgumentParser(description='model name to load the pickle file')
 parser.add_argument('-modelname', help='name of the classifier',default="Linear SVM")
-parser.add_argument('-filename', help='name of the txt file containing the article')
+parser.add_argument('-foldername', help='name of the txt file containing the article')
 args = parser.parse_args()
 model_name = args.modelname
-filename = args.filename
+foldername = args.foldername
 
-def model_pred(model_name,filename):
+def model_pred(model_name,foldername):
     """Test based on model name (defaults to Linear SVM) for predictions.
 
     Following models are available
@@ -40,20 +40,20 @@ def model_pred(model_name,filename):
     "Naive Bayes"
 
     """
-
-    filepath = os.path.join(os.getcwd(), filename)
-    with open(filepath,'rb') as f:
-        data = [f.read()]
     modelpath = os.path.join(os.getcwd(), 'models')
-    model = os.path.join(modelpath,model_name)
-    with open(model+'.pickle', 'rb') as fi:
+    model = os.path.join(modelpath, model_name)
+    with open(model + '.pickle', 'rb') as fi:
         model = pickle.load(fi)
 
-    label = model.predict(data)
-    print (label)
+    filepath = os.path.join(os.getcwd(), foldername)
+    for file in os.listdir(filepath):
+        with open(os.path.join(filepath,file),'rb') as f:
+            data = [f.read()]
+        label = model.predict(data)
+        print (file,label[0])
 
     # df_test = pd.read_csv("test.csv")
     # out_df.to_csv('pred-'+model_name+'.csv',index = False)
 
 if __name__ == '__main__':
-    model_pred(model_name,filename)
+    model_pred(model_name,foldername)
