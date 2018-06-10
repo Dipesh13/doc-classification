@@ -5,6 +5,7 @@ import pandas as pd
 import json
 import pickle
 import os
+from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -42,17 +43,21 @@ def model_pred(model_name,filename):
 
     filepath = os.path.join(os.getcwd(), filename)
     with open(filepath,'rb') as f:
-        data = f.read()
+        data = [f.read()]
     modelpath = os.path.join(os.getcwd(), 'models')
     model = os.path.join(modelpath,model_name)
     with open(model+'.pickle', 'rb') as fi:
-        pl = pickle.load(fi)
+        model = pickle.load(fi)
+
+    # pl = Pipeline([
+    #     ('vectorizer',CountVectorizer(token_pattern='[A-Za-z0-9]+(?=\\s+)'))
+    # ])
 
     # pattern = '[A-Za-z0-9]+(?=\\s+)'
     # vectorizer = CountVectorizer(token_pattern=pattern)
     # pred_data = vectorizer.transform(data)
-    # label = pl.predict(pred_data)
-    # print (label)
+    label = model.predict(data)
+    print (label)
 
     # df_test = pd.read_csv("test.csv")
     # out_df.to_csv('pred-'+model_name+'.csv',index = False)
