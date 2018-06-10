@@ -25,4 +25,5 @@ df = pd.DataFrame(
     })
 
 df = df[['labels', 'data']]
-print(df)
+# print(df.tail())
+df.to_csv('train.csv',index=False)

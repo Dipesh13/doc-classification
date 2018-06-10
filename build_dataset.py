@@ -5,9 +5,11 @@ import os
 
 sport_name = ['football','sport/cricket','sport/tennis']
 months = ['2018/may/','2018/apr/']
-days = [i for i in range(11,31)]
+days = [i for i in range(10,31)]
+count= []
 
 for s_name in sport_name:
+    f = 0
     if s_name == 'football':
         download_folder = os.path.join(os.getcwd(), s_name)
         if not os.path.exists(download_folder):
@@ -35,6 +37,7 @@ for s_name in sport_name:
                     links.append(a['href'])
 
             # print(links)
+            links = list(set(links))
             for link in links:
                 res = requests.get(link, allow_redirects=False)
                 html1 = res.text
@@ -46,3 +49,7 @@ for s_name in sport_name:
                     file.write(p.text.encode('utf-8'))
                 file.close()
                 print("Completed {}".format(link))
+                f+=1
+        count.append(f)
+
+print(dict(zip(sport_name,count)))
