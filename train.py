@@ -17,7 +17,7 @@ pattern = '[A-Za-z0-9]+(?=\\s+)'
 for model in model_names:
     """
     TO-DOs
-    1) convert labels to numbers using pd.get_dummies()
+    1) convert labels to numbers using pd.get_dummies() ?
     2) convert text data to numeric features.
     3) Add multiple models
     """

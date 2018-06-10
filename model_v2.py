@@ -1,6 +1,8 @@
 import re
 import pandas as pd
 import json
+import pickle
+import os
 from create_dataset import df
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
@@ -23,13 +25,19 @@ X_train,X_test,y_train,y_test = train_test_split(X,y,random_state=2)
 #     model_names = json.load(fi)
 
 pattern = '[A-Za-z0-9]+(?=\\s+)'
+path = os.path.join(os.getcwd(),'models')
+if not os.path.exists(path):
+    os.makedirs(path)
 for key,value in model_names.items():
     """
-    1) converted text data to numeric features.
-    2) Added multiple models
+    Add alpha numeric pattern for tokenization(This removes punctuation as well).
+    1) lower case before writing to df ? build_dataset.py
+    2) remove stop words before writing to df? build_dataset.py
+    3) predict on new data(+tranform new data)
+    4) read from config file
     """
     pl = Pipeline([
-        ('vectorizer',CountVectorizer()),
+        ('vectorizer',CountVectorizer(token_pattern=pattern)),
         ('clf',value)
     ])
 
@@ -37,3 +45,6 @@ for key,value in model_names.items():
 
     accuracy = pl.score(X_test,y_test)
     print("Acuuracy for {} is {}".format(key,accuracy))
+    destination = os.path.join(path,key)
+    with open(destination + '.pickle', 'wb') as fo:
+        pickle.dump(pl,fo)
