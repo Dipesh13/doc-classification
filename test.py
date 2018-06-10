@@ -49,13 +49,6 @@ def model_pred(model_name,filename):
     with open(model+'.pickle', 'rb') as fi:
         model = pickle.load(fi)
 
-    # pl = Pipeline([
-    #     ('vectorizer',CountVectorizer(token_pattern='[A-Za-z0-9]+(?=\\s+)'))
-    # ])
-
-    # pattern = '[A-Za-z0-9]+(?=\\s+)'
-    # vectorizer = CountVectorizer(token_pattern=pattern)
-    # pred_data = vectorizer.transform(data)
     label = model.predict(data)
     print (label)
 
